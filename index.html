@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图片切换</title>
+<meta name="description" content="" />
+<style type="text/css">
+	*{
+		margin: 0px;
+		padding: 0px;
+		list-style-type: none;
+	}
+	body{
+		font-family: "微软雅黑";
+		font-size: 12px;
+		text-align: center;
+	}
+	#wraper{
+		margin: 0 auto;
+		width: 400px;
+		height: 340px;
+		border: 1px solid blue;
+		overflow: hidden;
+		position: relative;
+	}
+	.items{
+		width: 400px;
+		height: 300px;
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		display: none;
+	}
+	#wraper ul{
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+	}
+	#wraper li{
+		float: left;
+		width: 12.5%;
+		height: 40px;
+	}
+	#wraper li a{
+		display: block;
+		text-decoration: none;
+		border: 1px solid black;
+		box-shadow: -2px 2px 8px #eee;
+		padding: 9px 20px;
+		line-height: 20px;
+		background: black;
+	}
+	#wraper li a:hover{
+		background: white;
+		background: -moz-linear-gradient(top,#fff,#222);
+		background: -o-linear-gradient(top,#fff,#aaa);
+		background: -webkit-linear-gradient(top,#fff,#aaa);
+	}
+	.clearfix:after{
+		display: block;
+		visibility: hidden;
+		height: 0;
+		content: " ";
+		font-size: 0px;
+		clear: both;
+	}
+	.clearfix{
+		zoom:1;
+	}
+</style>
+<script type="text/javascript" src="ui/jquery-1.8.3.js"></script>
+<script type="text/javascript">
+	$.fn.slide=function() {
+		return this.each(function() {
+			//将操作对象加载到内存中
+			var $wraper = $(this),
+				$items = $wraper.children("div"),//选取所有图片
+				$lis = $wraper.find("li"),//选取所有li
+				isAnimate = false,//判断是否在执行动画
+				$as = $wraper.find("a"),//选取所有<a>
+				visibleIndex = 0;//当前显示图片的序号
+
+			//执行敲击动画事件
+			$lis.live("click",function() {
+				//判断是否有动画在进行
+				if(isAnimate) return false;
+				clearInterval(t);
+				var index = $(this).index();
+				visibleIndex = index;
+				$items.each(function() {
+					if($(this).is(":visible")) $(this).hide();
+				});
+				isAnimate = true;
+				$items.eq(index).fadeIn(400,function() {
+					isAnimate = false;
+					if(t) clearInterval(t);
+					t = setInterval(init,2000);
+				});
+			});	
+			//去除<a>边框虚线
+			$as.focus(function() {
+				$(this).blur();
+			});
+			//设置定时动画
+			function init() {
+				var temp = visibleIndex + 1 >= $items.length ? 0 : ++visibleIndex;
+				$lis.eq(temp).trigger("click");
+			}
+			//hover暂停定制
+			$items.hover(
+				function() {
+					if(t) clearInterval(t);
+				},
+				function() {
+					if(t) clearInterval(t);
+					t = setInterval(init,2000);
+				});
+			//初始化
+			$items.filter(":first").show();
+			var t =setInterval(init,2000);
+		});
+	}
+
+	$(function() {
+		$("#wraper").slide();
+	});
+</script>
+<style type="text/css">
+</style>
+</head>
+<body>
+	<div id="wraper">
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-1.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-2.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-3.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-4.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-5.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-6.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-7.jpg">
+			</a>
+		</div>
+		<div class="items">
+			<a href="http://www.yeahzan.com">
+			<img src="ui/1-8.jpg">
+			</a>
+		</div>
+		<ul class="clearfix">
+			<li>
+				<a href="#">一</a>
+			</li>
+			<li>
+				<a href="#">二</a>
+			</li>
+			<li>
+				<a href="#">三</a>
+			</li>
+			<li>
+				<a href="#">四</a>
+			</li>
+			<li>
+				<a href="#">五</a>
+			</li>
+			<li>
+				<a href="#">六</a>
+			</li>
+			<li>
+				<a href="#">七</a>
+			</li>
+			<li>
+				<a href="#">八</a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>
+
