@@ -1,7 +1,7 @@
 image-switcher
 ==============
 
-图片切换效果
+图片切换效果插件
 
 YeahZan JAN 2013
 
